@@ -15,7 +15,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 /**
  * Created by anand on 17/8/15.
  */
-class AuthController @Inject()(userService: UserService, cacheApi: CacheApi) extends Controller with LoggerHelper {
+class AuthController @Inject()(webJarAssets: WebJarAssets, userService: UserService, cacheApi: CacheApi) extends Controller with LoggerHelper {
 
   /**
    * Render login page
@@ -23,7 +23,7 @@ class AuthController @Inject()(userService: UserService, cacheApi: CacheApi) ext
    * @return
    */
   def login = Action { implicit request =>
-    Ok(views.html.login("CSR-System: Login")).withNewSession
+    Ok(views.html.login("CSR-System: Login")(webJarAssets)).withNewSession
   }
 
   /**

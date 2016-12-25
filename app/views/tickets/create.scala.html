@@ -1,7 +1,7 @@
 @* create Template File *@
-@(title: String, user: User, users: List[User], customers: List[Customer])(implicit flash: Flash)
+@(title: String, user: User, users: List[User], customers: List[Customer])(webJarAssets: WebJarAssets)(implicit flash: Flash)
 
-@adminlte.main(title, user) {
+@adminlte.main(title, user)(webJarAssets) {
 
     <!-- Content Header (Page header) -->
     <section class="content-header">

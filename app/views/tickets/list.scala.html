@@ -1,5 +1,5 @@
 @* tickets Template File *@
-@(title: String, user: User, tickets: List[Ticket])(implicit flash: Flash)
+@(title: String, user: User, tickets: List[Ticket])(webJarAssets: WebJarAssets)(implicit flash: Flash)
 
 @getLabelCSS(status: String) = {
     @{status match {
@@ -25,7 +25,7 @@
     </tr>
 }
 
-@adminlte.main(title, user) {
+@adminlte.main(title, user)(webJarAssets) {
 
     <!-- Content Header (Page header) -->
     <section class="content-header">

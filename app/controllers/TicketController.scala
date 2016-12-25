@@ -15,7 +15,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
  * Created by anand on 19/8/15.
  */
 class TicketController @Inject()
-(cacheApi: CacheApi,
+(webJarAssets: WebJarAssets,
+ cacheApi: CacheApi,
  uService: UserService,
  tService: TicketService,
  cService: CustomerService,
@@ -32,10 +33,10 @@ class TicketController @Inject()
     FutureHelper {
       tService.getAllTicket()
     }.map { tickets =>
-      Ok(views.html.tickets.list("Tickets", user, tickets))
+      Ok(views.html.tickets.list("Tickets", user, tickets)(webJarAssets))
     }.recover { case ex: Exception =>
       error(ex.getMessage, ex)
-      Ok(views.html.tickets.list("Tickets", user, List.empty[Ticket]))
+      Ok(views.html.tickets.list("Tickets", user, List.empty[Ticket])(webJarAssets))
     }
   }
 
@@ -79,10 +80,10 @@ class TicketController @Inject()
     } yield (users, customers)
 
     futurePageData.map { case (users, customers) =>
-      Ok(views.html.tickets.create("Tickets", user, users, customers))
+      Ok(views.html.tickets.create("Tickets", user, users, customers)(webJarAssets))
     }.recover { case ex: Exception =>
       error(ex.getMessage, ex)
-      Ok(views.html.tickets.create("Tickets", user, List.empty[User], List.empty[Customer]))
+      Ok(views.html.tickets.create("Tickets", user, List.empty[User], List.empty[Customer])(webJarAssets))
     }
   }
 

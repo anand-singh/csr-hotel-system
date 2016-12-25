@@ -1,9 +1,9 @@
 @* dashboard Template File *@
-@(title: String, user: User, users: List[User], ticketDetails: Map[String, Int])
+@(title: String, user: User, users: List[User], ticketDetails: Map[String, Int])(webJarAssets: WebJarAssets)
 
 @import utils.GravatarUtility
 
-@adminlte.main(title, user) {
+@adminlte.main(title, user)(webJarAssets) {
 
     <!-- Content Header (Page header) -->
     <section class="content-header">

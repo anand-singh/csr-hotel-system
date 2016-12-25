@@ -1,4 +1,4 @@
-@(title: String, user: User)(content: Html)(customScripts: Html)
+@(title: String, user: User)(webJarAssets: WebJarAssets)(content: Html)(customScripts: Html)
 
 <!DOCTYPE html>
 <html>
@@ -8,7 +8,7 @@
             <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-        @stylesheet(title)
+        @stylesheet(title)(webJarAssets)
 
     </head>
 
@@ -29,7 +29,7 @@
             <!-- ./wrapper -->
 
             <!-- REQUIRED JS SCRIPTS -->
-        @script(title)
+        @script(title)(webJarAssets)
 
         @customScripts
 
