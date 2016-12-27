@@ -2,9 +2,8 @@ package models
 
 import java.util.Date
 
-import anorm._
-import anorm.{SQL, SqlParser}
 import anorm.SqlParser._
+import anorm._
 
 /**
  * Created by anand on 18/8/15.

@@ -1,19 +1,21 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{Customer, TicketDetail, Ticket, User}
+import models.{Customer, Ticket, TicketDetail, User}
 import play.api.cache.CacheApi
-import play.api.mvc.Controller
+import play.api.mvc.{Action, AnyContent, Controller}
 import services.{CommentService, CustomerService, TicketService, UserService}
-import utils.{FutureHelper, LoggerHelper, AuthHelper}
+import utils.{AuthHelper, FutureHelper, LoggerHelper}
 import play.api.data._
 import play.api.data.Forms._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
- * Created by anand on 19/8/15.
- */
+  * This is a Controller class to serve Reservations related request/response.
+  *
+  * Created by anand on 19/8/15.
+  */
 class TicketController @Inject()
 (webJarAssets: WebJarAssets,
  cacheApi: CacheApi,
@@ -24,28 +26,28 @@ class TicketController @Inject()
   extends AuthHelper(cacheApi) with Controller with LoggerHelper {
 
   /**
-   * Render ticket list page
-   *
-   * @return
-   */
+    * Render ticket list page
+    *
+    * @return
+    */
   def tickets = withAuth { user => implicit request =>
     info(s"Session user data: $user")
     FutureHelper {
       tService.getAllTicket()
     }.map { tickets =>
-      Ok(views.html.tickets.list("Tickets", user, tickets)(webJarAssets))
+      Ok(views.html.tickets.list("Reservations", user, tickets)(webJarAssets))
     }.recover { case ex: Exception =>
       error(ex.getMessage, ex)
-      Ok(views.html.tickets.list("Tickets", user, List.empty[Ticket])(webJarAssets))
+      Ok(views.html.tickets.list("Reservations", user, List.empty[Ticket])(webJarAssets))
     }
   }
 
   /**
-   * Render ticket details page
-   *
-   * @param id
-   * @return
-   */
+    * Render ticket details page
+    *
+    * @param id The Reservation Id
+    * @return
+    */
   def ticketDetails(id: Long) = withAuth { user => implicit request =>
     info(s"Session user data: $user")
     FutureHelper {
@@ -68,22 +70,22 @@ class TicketController @Inject()
   }
 
   /**
-   * Render create ticket form with required data
-   *
-   * @return
-   */
+    * Render create ticket form with required data
+    *
+    * @return
+    */
   def createFormView = withAuth { user => implicit request =>
     info(s"Session user data: $user")
     val futurePageData = for {
-      users <- FutureHelper(uService.getUsers)
+      users <- FutureHelper(uService.getUsers())
       customers <- FutureHelper(cService.getAllCustomer)
     } yield (users, customers)
 
     futurePageData.map { case (users, customers) =>
-      Ok(views.html.tickets.create("Tickets", user, users, customers)(webJarAssets))
+      Ok(views.html.tickets.create("Reservations", user, users, customers)(webJarAssets))
     }.recover { case ex: Exception =>
       error(ex.getMessage, ex)
-      Ok(views.html.tickets.create("Tickets", user, List.empty[User], List.empty[Customer])(webJarAssets))
+      Ok(views.html.tickets.create("Reservations", user, List.empty[User], List.empty[Customer])(webJarAssets))
     }
   }
 
@@ -96,16 +98,16 @@ class TicketController @Inject()
     ))
 
   /**
-   * Handle create ticket form data
-   *
-   * @return
-   */
-  def create = withAuth { user => implicit request =>
+    * Handle create ticket form data
+    *
+    * @return
+    */
+  def create: Action[AnyContent] = withAuth { user => implicit request =>
     info(s"Create form called with session user data: $user")
     FutureHelper {
       ticketForm.bindFromRequest.fold(
         formWithErrors => {
-          Redirect(routes.TicketController.createFormView).flashing {
+          Redirect(routes.TicketController.createFormView()).flashing {
             "ERROR" -> "Oops! Please check the form data."
           }
         },
@@ -115,15 +117,15 @@ class TicketController @Inject()
           val ticketObj = Ticket(description = description, area = area,
             customerId = customerId, createdBy = user.id, assignedTo = assignedTo)
           val result = tService.createTicket(ticketObj) match {
-            case Right(tObj: Ticket) => ("SUCCESS" -> "Ticket has been created successfully.")
-            case Left(error) => ("ERROR" -> error)
+            case Right(tObj: Ticket) => "SUCCESS" -> "Ticket has been created successfully."
+            case Left(error) => "ERROR" -> error
           }
-          Redirect(routes.TicketController.tickets).flashing(result)
+          Redirect(routes.TicketController.tickets()).flashing(result)
         }
       )
     }.map { result => result }.recover { case ex: Exception =>
       error(ex.getMessage, ex)
-      Redirect(routes.TicketController.tickets).flashing {
+      Redirect(routes.TicketController.tickets()).flashing {
         "ERROR" -> "Oops! There is some problem with server. Please try after some time."
       }
     }

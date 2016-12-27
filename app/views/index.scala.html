@@ -58,7 +58,7 @@
                             <div class="progress-bar" style="width : 40 %"></div>
                         </div>
                         <span class="progress-description">
-                            @ticketDetails.getOrElse("New", 0) Tickets in New status
+                            @ticketDetails.getOrElse("New", 0) Reservations in New status
                         </span>
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
@@ -71,7 +71,7 @@
                             <div class="progress-bar" style="width : 60 %"></div>
                         </div>
                         <span class="progress-description">
-                            @ticketDetails.getOrElse("Open", 0) Tickets in Open status
+                            @ticketDetails.getOrElse("Open", 0) Reservations in Open status
                         </span>
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
@@ -84,7 +84,7 @@
                             <div class="progress-bar" style="width : 50 %"></div>
                         </div>
                         <span class="progress-description">
-                            @ticketDetails.getOrElse("Closed", 0) Tickets in Closed status
+                            @ticketDetails.getOrElse("Closed", 0) Reservations in Closed status
                         </span>
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
@@ -97,7 +97,7 @@
                             <div class="progress-bar" style="width : 100 %"></div>
                         </div>
                         <span class="progress-description">
-                        @{ticketDetails.map{case (key, value) => value}.sum} Tickets
+                        @{ticketDetails.map{case (key, value) => value}.sum} Reservations
                         </span>
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
