@@ -17,7 +17,7 @@ This is a classic CSR-System application, backed by a JDBC database. It demonstr
 * The live application is currently hosted at : [CSR-System](http://csr-hotel-system.herokuapp.com/)
 * The GitHub code for the project is at : [CSR-System](https://github.com/anand-singh/csr-hotel-system)
 * Clone the project into local system
-* To run the Play framework 2.4.x, you need JDK 8
+* To run the Play framework 2.5.x, you need JDK 8
 * Install Typesafe Activator if you do not have it already. You can get it from here: [download](http://www.playframework.com/download)
 * Execute `activator clean compile` to build the product
 * Execute `activator run` to execute the product
